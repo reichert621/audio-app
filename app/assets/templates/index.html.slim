@@ -1,9 +1,9 @@
 .row
   .col-md-6
     h2 Hello!
-    ul ng-repeat="recording in recordings"
-      li
-        a href="{{recording.url}}"
+    ul#recordings-list
+      li ng-repeat="recording in recordings"
+        a download="{{recording.name}}" href="{{recording.url}}"
           | {{ recording.name }}
 
   .col-md-6
@@ -21,3 +21,12 @@
             | {{ error }}
       button.btn.btn-primary ng-click="create_new_recording()"
         | Submit
+
+.row
+  .col-md-12
+    h3 Test Recording
+
+    button.btn.btn-success.record-button ng-disabled="is_recording" ng-click="start_recording()"
+      | {{ is_recording ? 'Recording...' : 'Record' }}
+    button.btn.btn-danger.record-button ng-disabled="!is_recording" ng-click="stop_recording()"
+      | Stop
