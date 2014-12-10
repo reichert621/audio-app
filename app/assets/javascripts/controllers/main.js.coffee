@@ -33,42 +33,30 @@ angular.module('AudioApp').controller 'MainCtrl', ['$scope', '$http', '$timeout'
     $scope.stop_recording = ->
       $scope.recorder && $scope.recorder.stop()
       $scope.is_recording = false
-      create_download_link()
+      handle_audio_file()
       $scope.recorder.clear()
-
-    create_download_link = ->
-      $scope.recorder && $scope.recorder.exportWAV (blob) ->
-        url = URL.createObjectURL(blob)
-        li = document.createElement('li')
-        hf = document.createElement('a')
-
-        hf.href = url
-        hf.download = "#{new Date().toISOString()}.wav"
-        hf.innerHTML = hf.download
-        li.appendChild(hf)
-        $('#recordings-list').append(li)
 
     fetch_recordings = ->
       $http.get('/api/recordings').success (data) ->
         $scope.recordings = data
-      .error (data) ->
-        # Show default dummy items
-        $scope.recordings = [
-          { name: "Alex's Recording", url: "http://alexreichert.com" },
-          { name: "Random Song", url: "http://example.com" }
-        ]
 
-    $scope.create_new_recording = ->
-      params = { name: $scope.form.new_name, url: $scope.form.new_url }
+    save_recording = (file, name) ->
+      params = { name: name, audio: file }
       $http.post('/api/recordings', params).success (data) ->
         add_recording_to_list(data)
       .error (data) ->
         flash_error_messages(data)
 
+    handle_audio_file = (blob) ->
+      $scope.recorder && $scope.recorder.exportWAV (blob) ->
+        name = "#{new Date().toISOString()}.wav"
+        reader = new FileReader()
+        reader.onload = (e) ->
+          save_recording(e.target.result, name)
+        reader.readAsDataURL(blob)
+
     add_recording_to_list = (recording) ->
       $scope.recordings.push(recording)
-      $scope.form.new_name = ""
-      $scope.form.new_url = ""
 
     flash_error_messages = (errors) ->
       $scope.form.error_messages = errors

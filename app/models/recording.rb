@@ -1,3 +1,4 @@
 class Recording < ActiveRecord::Base
-  validates :name, :url, uniqueness: true
+  validates :name, uniqueness: true
+  mount_uploader :audio, AudioUploader
 end
