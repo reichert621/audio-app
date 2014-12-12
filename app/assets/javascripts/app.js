@@ -6,6 +6,14 @@ angular.module('AudioApp', [
     $routeProvider
       .when('/', {
         templateUrl: 'index.html',
-        controller: 'MainCtrl'
+        controller: 'MainController'
+      })
+      .when('/texts/:id', {
+        templateUrl: 'text.html',
+        controller: 'TextController'
+      })
+      .when('/record', {
+        templateUrl: 'record.html',
+        controller: 'RecordingController'
       });
   }]);

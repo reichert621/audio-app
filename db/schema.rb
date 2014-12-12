@@ -11,10 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141206224602) do
+ActiveRecord::Schema.define(version: 20141212211825) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "chapters", force: true do |t|
+    t.string   "name"
+    t.integer  "text_id"
+    t.integer  "rank"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "excerpts", force: true do |t|
+    t.integer  "text_id"
+    t.integer  "chapter_id"
+    t.integer  "rank"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "recordings", force: true do |t|
     t.string   "name"
@@ -23,6 +40,13 @@ ActiveRecord::Schema.define(version: 20141206224602) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "audio"
+  end
+
+  create_table "texts", force: true do |t|
+    t.string   "name"
+    t.string   "author"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

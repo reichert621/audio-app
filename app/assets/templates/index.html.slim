@@ -1,14 +1,9 @@
-.row
-  .col-md-6
-    h2 Hello!
-    ul#recordings-list
-      li ng-repeat="recording in recordings"
-        a href="{{recording.audio.url}}"
-          | {{ recording.name }}
-
-  .col-md-6
-    h3 Create new recording
-    button.btn.btn-success.record-button ng-disabled="is_recording" ng-click="start_recording()"
-      | {{ is_recording ? 'Recording...' : 'Record' }}
-    button.btn.btn-danger.record-button ng-disabled="!is_recording" ng-click="stop_recording()"
-      | Stop
+h1
+  | Books
+hr
+div ng-repeat="book in books"
+  h4
+    a ng-href="#/texts/{{ book.id }}"
+      | {{ book.name }}
+  p.small
+    | by {{ book.author }}
