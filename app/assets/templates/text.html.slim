@@ -1,8 +1,12 @@
+p
+  a href="#/home"
+    | Back
+
 h2
   | {{ book.name }}
 p
   | by {{ book.author }}
 hr
 div ng-repeat="chapter in chapters"
-  a ng-href="#/chapters/{{chapter.id}}"
+  a ng-href="#/texts/{{book.id}}/chapters/{{chapter.id}}"
     | {{ chapter.name }}

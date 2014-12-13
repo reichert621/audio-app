@@ -1,6 +1,7 @@
 angular.module('AudioApp').controller 'ChapterController', ['$scope', '$http', '$routeParams',
   ($scope, $http, $routeParams) ->
     init = ->
+      $scope.book_id = $routeParams.text_id
       fetch_chapter()
 
     fetch_chapter = ->

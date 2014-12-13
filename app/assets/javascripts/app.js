@@ -4,7 +4,7 @@ angular.module('AudioApp', [
   ]).config(['$routeProvider',
   function ($routeProvider) {
     $routeProvider
-      .when('/', {
+      .when('/home', {
         templateUrl: 'index.html',
         controller: 'MainController'
       })
@@ -12,12 +12,15 @@ angular.module('AudioApp', [
         templateUrl: 'text.html',
         controller: 'TextController'
       })
-      .when('/chapters/:id', {
+      .when('/texts/:text_id/chapters/:id', {
         templateUrl: 'chapter.html',
         controller: 'ChapterController'
       })
       .when('/record', {
         templateUrl: 'record.html',
         controller: 'RecordingController'
+      })
+      .otherwise({
+        redirectTo: '/home'
       });
   }]);
