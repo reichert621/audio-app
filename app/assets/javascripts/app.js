@@ -12,6 +12,10 @@ angular.module('AudioApp', [
         templateUrl: 'text.html',
         controller: 'TextController'
       })
+      .when('/chapters/:id', {
+        templateUrl: 'chapter.html',
+        controller: 'ChapterController'
+      })
       .when('/record', {
         templateUrl: 'record.html',
         controller: 'RecordingController'

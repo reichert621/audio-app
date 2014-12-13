@@ -3,4 +3,9 @@ class Api::ChaptersController < ApplicationController
     text = Text.find(params[:text_id])
     render json: text.chapters
   end
+
+  def show
+    chapter = Chapter.find(params[:id])
+    render json: chapter
+  end
 end

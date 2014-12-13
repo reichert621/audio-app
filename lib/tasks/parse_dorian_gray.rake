@@ -48,7 +48,8 @@ namespace :parse_text do
           content = excerpt.join("\r\n")
           excerpt_rank += 1
           e = _chapter.excerpts.find_or_initialize_by(text_id: text.id, rank: excerpt_rank)
-          e.content = content && e.save!
+          e.content = content
+          e.save!
           # Clears current excerpt and resets word count
           excerpt = []
           excerpt_word_count = 0

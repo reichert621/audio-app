@@ -1,0 +1,5 @@
+h2
+  | {{ chapter.name }}
+hr
+div.show-newlines ng-repeat="excerpt in excerpts | orderBy:'rank'"
+  | {{ excerpt.content }}
