@@ -7,6 +7,9 @@ h2
 hr
 div.excerpt-content ng-repeat="excerpt in excerpts | orderBy:'rank'"
   | {{ excerpt_preview(excerpt) }}
+  button.btn.btn-sm.btn-default.pull-right.toggle-preview ng-click="toggle_excerpt(excerpt)"
+    | {{ excerpt.show_all ? "Collapse" : "Expand" }}
+
   p.small
     a ng-href="#/excerpts/{{excerpt.id}}"
       | Go to excerpt >>

@@ -14,7 +14,13 @@ angular.module('AudioApp').controller 'ChapterController', ['$scope', '$http', '
         $scope.excerpts = data
 
     $scope.excerpt_preview = (excerpt) ->
-      excerpt.content.split(" ").slice(0, 30).join(" ") + "..."
+      if excerpt.show_all
+        excerpt.content
+      else
+        excerpt.content.split(" ").slice(0, 30).join(" ") + "..."
+
+    $scope.toggle_excerpt = (excerpt) ->
+      excerpt.show_all = !excerpt.show_all
 
     init()
   ]
