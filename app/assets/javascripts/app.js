@@ -1,6 +1,7 @@
 angular.module('AudioApp', [
     'ngRoute',
-    'templates'
+    'templates',
+    'ui.bootstrap'
   ]).config(['$routeProvider',
   function ($routeProvider) {
     $routeProvider
@@ -15,6 +16,10 @@ angular.module('AudioApp', [
       .when('/texts/:text_id/chapters/:id', {
         templateUrl: 'chapter.html',
         controller: 'ChapterController'
+      })
+      .when('/excerpts/:id', {
+        templateUrl: 'excerpt.html',
+        controller: 'ExcerptController'
       })
       .when('/record', {
         templateUrl: 'record.html',

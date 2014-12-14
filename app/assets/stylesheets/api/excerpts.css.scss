@@ -2,6 +2,26 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.show-newlines {
+.info-header {
+  color: #5bc0de;
+}
+
+.excerpt-content {
   white-space: pre-wrap;
+  font-size: 16px;
+  line-height: 1.7;
+  width: 90%;
+}
+
+.speed-read {
+  height: 100%;
+  margin: 10px 0px;
+  padding: 20px;
+  font-size: 24px;
+  border-left: solid 1px gray;
+}
+
+.speed-read-settings {
+  margin-left: 10px;
+  margin-bottom: 10px;
 }

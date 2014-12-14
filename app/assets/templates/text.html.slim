@@ -7,6 +7,6 @@ h2
 p
   | by {{ book.author }}
 hr
-div ng-repeat="chapter in chapters"
+div.chapter-titles ng-repeat="chapter in chapters"
   a ng-href="#/texts/{{book.id}}/chapters/{{chapter.id}}"
     | {{ chapter.name }}

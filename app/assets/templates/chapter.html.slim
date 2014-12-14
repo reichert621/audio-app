@@ -5,5 +5,9 @@ p
 h2
   | {{ chapter.name }}
 hr
-div.show-newlines ng-repeat="excerpt in excerpts | orderBy:'rank'"
-  | {{ excerpt.content }}
+div.excerpt-content ng-repeat="excerpt in excerpts | orderBy:'rank'"
+  | {{ excerpt_preview(excerpt) }}
+  p.small
+    a ng-href="#/excerpts/{{excerpt.id}}"
+      | Go to excerpt >>
+  hr
