@@ -1,16 +1,53 @@
-angular.module('AudioApp').controller 'TextController', ['$scope', '$http', '$routeParams',
-  ($scope, $http, $routeParams) ->
+angular.module('AudioApp').controller 'TextController', ['$scope', '$http', '$routeParams', '$location',
+  ($scope, $http, $routeParams, $location) ->
+    $scope.selected = {}
+
     init = ->
       fetch_book()
 
     fetch_book = ->
       $http.get("/api/texts/#{$routeParams.id}").success (data) ->
-        $scope.book = data
-        fetch_book_chapters(data)
+        $scope.book = data.text
+        $scope.chapters = data.chapters
+        c = set_display_chapter()
+        $scope.display_chapter_info(c)
 
-    fetch_book_chapters = (book) ->
-      $http.get("/api/texts/#{book.id}/chapters").success (data) ->
-        $scope.chapters = data
+    set_display_chapter = ->
+      _.find($scope.chapters, (ch) ->
+          ch.id.toString() == $routeParams.chapter_id
+      ) or _.find($scope.chapters, (ch) -> ch.rank == 1 )
+
+    $scope.display_chapter_info = (chapter) ->
+      $location.search('chapter_id', chapter.id)
+      $scope.selected.chapter = chapter
+      fetch_chapter_excerpts(chapter)
+
+    fetch_chapter_excerpts = (chapter) ->
+      $http.get("/api/chapters/#{chapter.id}/excerpts").success (data) ->
+        $scope.excerpts = data
+
+    $scope.excerpt_preview = (excerpt) ->
+      if excerpt.show_all
+        excerpt.content
+      else
+        excerpt.content.split(" ").slice(0, 30).join(" ") + "..."
+
+    $scope.toggle_excerpt = (excerpt) ->
+      excerpt.show_all = !excerpt.show_all
+      check_if_all_expanded_or_collapsed()
+
+    check_if_all_expanded_or_collapsed = ->
+      if _.all($scope.excerpts, (e) -> e.show_all == true )
+        $scope.all_expanded = true
+      else if _.all($scope.excerpts, (e) -> e.show_all == false )
+        $scope.all_expanded = false
+
+    $scope.toggle_all_excerpts = ->
+      $scope.all_expanded = !$scope.all_expanded
+      _.map($scope.excerpts, (excerpt) -> excerpt.show_all = $scope.all_expanded )
+
+    $scope.is_selected = (chapter) ->
+      chapter.id == $scope.selected.chapter.id
 
     init()
   ]

@@ -11,7 +11,8 @@ angular.module('AudioApp', [
       })
       .when('/texts/:id', {
         templateUrl: 'text.html',
-        controller: 'TextController'
+        controller: 'TextController',
+        reloadOnSearch: false
       })
       .when('/texts/:text_id/chapters/:id', {
         templateUrl: 'chapter.html',

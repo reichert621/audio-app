@@ -1,5 +1,5 @@
-angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '$routeParams', '$interval',
-  ($scope, $http, $routeParams, $interval) ->
+angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '$routeParams', '$interval', '$location',
+  ($scope, $http, $routeParams, $interval, $location) ->
     $scope.num_words = [1, 2, 3, 5, 7, 10]
     $scope.read_speeds = [1000, 700, 500, 300, 200, 100]
     $scope.num_words_per_snippet = $scope.num_words[2]

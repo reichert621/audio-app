@@ -1,12 +1,32 @@
-p
+p.pull-right
   a href="#/home"
-    | Back
+    | << Back
 
 h2
   | {{ book.name }}
 p
   | by {{ book.author }}
 hr
-div.chapter-titles ng-repeat="chapter in chapters"
-  a ng-href="#/texts/{{book.id}}/chapters/{{chapter.id}}"
-    | {{ chapter.name }}
+.row.chapter-previews
+  .col-md-3
+    div.list-group
+      a.list-group-item ng-repeat="chapter in chapters | orderBy:'rank'" ng-click="display_chapter_info(chapter)" ng-class="{ active: is_selected(chapter) }"
+        | {{ chapter.name }}
+        span.glyphicon.glyphicon-chevron-right.pull-right ng-if="is_selected(chapter)"
+
+  .col-md-9 ng-hide="selected.excerpt"
+    h2.chapter-header
+      | {{ selected.chapter.name }}
+      button.btn.btn-primary.pull-right ng-click="toggle_all_excerpts()"
+        | {{ all_expanded ? "Collapse" : "Expand" }} All
+
+    hr
+    div.excerpt-content ng-repeat="excerpt in excerpts | orderBy:'rank'"
+      | {{ excerpt_preview(excerpt) }}
+      button.btn.btn-sm.btn-default.pull-right.toggle-preview ng-click="toggle_excerpt(excerpt)"
+        | {{ excerpt.show_all ? "Collapse" : "Expand" }}
+
+      p.small
+        a ng-href="#/excerpts/{{excerpt.id}}"
+          | Go to excerpt >>
+      hr

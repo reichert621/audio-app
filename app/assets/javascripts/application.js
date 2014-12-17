@@ -17,6 +17,7 @@
 //= require angular-route
 //= require angular-rails-templates
 //= require angular-bootstrap
+//= require lodash
 //= require recorderWorker
 //= require recorder
 //= require_tree ../templates

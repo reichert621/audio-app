@@ -1,6 +1,6 @@
-p
-  a ng-href="#/texts/{{excerpt.text_id}}/chapters/{{excerpt.chapter_id}}"
-    | Back
+p.pull-right
+  a ng-href="#/texts/{{excerpt.text_id}}?chapter_id={{chapter.id}}"
+    | << Back
 
 h3
   strong
@@ -8,25 +8,20 @@ h3
   | &nbsp;Excerpt #
   | {{ excerpt.rank }}
 
-.row
-  .col-md-12
-    .excerpt-content
-      | {{ excerpt.content }}
-
 hr
 
 .row
   .col-md-4
-    h3 Speed Reading Practice
+    h4 Speed Reading Practice
     div.speed-read-options
       form.form-inline
         select.form-control.speed-read-settings ng-model='num_words_per_snippet' ng-options="num for num in num_words" ng-change="reset_speed_read()"
         label.control-label
-          | &nbsp;word(s)
+          | &nbsp;word(s) per
 
         select.form-control.speed-read-settings ng-model='ms_speed' ng-options="speed for speed in read_speeds"
         label.control-label
-          | &nbsp;ms per interval
+          | &nbsp;ms
 
       button.btn.btn-primary.speed-read-settings ng-click="start_speed_read()" ng-hide="is_speed_reading"
         | Start
@@ -36,8 +31,15 @@ hr
         | Reset
 
   .col-md-8
-    h3.info-header Text:
+    h4.info-header Text:
     .speed-read
       p
         | {{ speed_read_snippet }}
+
+hr
+
+.row
+  .col-md-12
+    .excerpt-content
+      | {{ excerpt.content }}
       

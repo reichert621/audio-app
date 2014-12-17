@@ -3,8 +3,15 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .chapter-titles {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 500;
+  a:hover {
+    cursor: pointer;
+  }
+}
+
+.chapter-header {
+  margin-top: 0px;
 }
 
 button.toggle-preview {

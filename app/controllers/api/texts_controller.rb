@@ -6,6 +6,7 @@ class Api::TextsController < ApplicationController
 
   def show
     text = Text.find(params[:id])
-    render json: text
+    chapters = text.chapters
+    render json: { text: text, chapters: chapters }
   end
 end
