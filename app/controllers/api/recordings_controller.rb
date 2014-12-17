@@ -1,12 +1,13 @@
 class Api::RecordingsController < ApplicationController
   require 'base64'
   def index
-    recordings = Recording.all
-    render json: recordings
+    excerpt = Excerpt.find(params[:excerpt_id])
+    render json: excerpt.recordings
   end
 
   def create
-    recording = Recording.new(recording_params)
+    excerpt = Excerpt.find(params[:excerpt_id])
+    recording = excerpt.recordings.new(recording_params)
     recording.audio = decoded_audio_file
 
     if recording.save
