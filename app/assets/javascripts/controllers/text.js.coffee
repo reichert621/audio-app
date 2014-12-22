@@ -25,6 +25,7 @@ angular.module('AudioApp').controller 'TextController', ['$scope', '$http', '$ro
     fetch_chapter_excerpts = (chapter) ->
       $http.get("/api/chapters/#{chapter.id}/excerpts").success (data) ->
         $scope.excerpts = data
+        $scope.all_expanded = false
 
     $scope.excerpt_preview = (excerpt) ->
       if excerpt.show_all

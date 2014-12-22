@@ -1,5 +1,5 @@
-angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '$routeParams', '$interval', '$location',
-  ($scope, $http, $routeParams, $interval, $location) ->
+angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '$routeParams', '$interval', '$location', '$sce',
+  ($scope, $http, $routeParams, $interval, $location, $sce) ->
     $scope.num_words = [1, 2, 3, 5, 7, 10]
     $scope.read_speeds = [1000, 700, 500, 300, 200, 100]
     $scope.num_words_per_snippet = $scope.num_words[2]
@@ -70,21 +70,45 @@ angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '
     $scope.stop_recording = ->
       $scope.recorder && $scope.recorder.stop()
       $scope.is_recording = false
+      $scope.can_save_recording = true
+      render_audio_preview()
+
+    $scope.reset_recording = ->
+      $scope.recorder.clear()
+      reset_audio_preview()
+      $scope.can_save_recording = false
+
+    reset_audio_preview = ->
+      $('.preview-audio audio').attr('src', "")
+
+    $scope.export_audio = ->
       handle_audio_file()
       $scope.recorder.clear()
+
+    render_audio_preview = ->
+      $scope.recorder && $scope.recorder.exportWAV (blob) ->
+        url = URL.createObjectURL(blob)
+        secure_url = $sce.trustAsResourceUrl(url)
+        $('.preview-audio audio').attr('src', secure_url)
 
     fetch_recordings = ->
       $http.get("/api/excerpts/#{$routeParams.id}/recordings").success (data) ->
         $scope.recordings = data
+        _.each($scope.recordings, (rec) ->
+          rec.audio.url = $sce.trustAsResourceUrl(rec.audio.url)
+        )
 
     save_recording = (file, name) ->
       params = { name: name, audio: file }
+      $scope.saving = true
       $http.post("/api/excerpts/#{$routeParams.id}/recordings", params).success (data) ->
         add_recording_to_list(data)
+        reset_audio_preview()
+        $scope.saving = false
       .error (data) ->
         console.log(data)
 
-    handle_audio_file = (blob) ->
+    handle_audio_file = ->
       $scope.recorder && $scope.recorder.exportWAV (blob) ->
         name = "#{new Date().toISOString()}.wav"
         reader = new FileReader()
@@ -93,6 +117,7 @@ angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '
         reader.readAsDataURL(blob)
 
     add_recording_to_list = (recording) ->
+      recording.audio.url = $sce.trustAsResourceUrl(recording.audio.url)
       $scope.recordings.push(recording)
 
     init()
