@@ -107,6 +107,8 @@ angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '
         $scope.saving = false
       .error (data) ->
         console.log(data)
+        reset_audio_preview()
+        $scope.saving = false
 
     handle_audio_file = ->
       $scope.recorder && $scope.recorder.exportWAV (blob) ->
