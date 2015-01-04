@@ -2,7 +2,7 @@ class Api::RecordingsController < ApplicationController
   require 'base64'
   def index
     excerpt = Excerpt.find(params[:excerpt_id])
-    render json: excerpt.recordings
+    render json: excerpt.recordings.to_json(include: { user: { only: :email } })
   end
 
   def create

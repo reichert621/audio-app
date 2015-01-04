@@ -52,6 +52,8 @@ hr
       li ng-repeat="recording in recordings"
         a href="{{recording.audio.url}}"
           | {{ recording.name }}
+        small<
+          | by {{ recording.user.email }}
         p
           audio controls="true" ng-src="{{recording.audio.url}}"
 
