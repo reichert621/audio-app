@@ -95,7 +95,7 @@ angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '
       $http.get("/api/excerpts/#{$routeParams.id}/recordings").success (data) ->
         $scope.recordings = data
         _.each($scope.recordings, (rec) ->
-          rec.audio.url = $sce.trustAsResourceUrl(rec.audio.url)
+          rec.audio_url = $sce.trustAsResourceUrl(rec.audio_url)
         )
 
     save_recording = (file, name) ->
@@ -119,8 +119,26 @@ angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '
         reader.readAsDataURL(blob)
 
     add_recording_to_list = (recording) ->
-      recording.audio.url = $sce.trustAsResourceUrl(recording.audio.url)
+      recording.audio_url = $sce.trustAsResourceUrl(recording.audio_url)
       $scope.recordings.push(recording)
+
+    $scope.add_new_comment = (recording) ->
+      recording.new_comment = {
+        commentable_type: "Recording",
+        commentable_id: recording.id
+      }
+
+    $scope.cancel_new_comment = (recording) ->
+      recording.new_comment = undefined
+
+    $scope.save_new_comment = (recording) ->
+      params = comment: recording.new_comment
+      $http.post("/api/comments", params).success (data) ->
+        recording.comments.push(data)
+        recording.new_comment = undefined
+      .error (data) ->
+        recording.new_comment = undefined
+        console.log(data)
 
     init()
   ]

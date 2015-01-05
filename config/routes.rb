@@ -19,5 +19,7 @@ Rails.application.routes.draw do
     resources :excerpts, only: :show do
       resources :recordings, shallow: true
     end
+
+    resources :comments
   end
 end

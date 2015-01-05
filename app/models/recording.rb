@@ -3,4 +3,5 @@ class Recording < ActiveRecord::Base
   mount_uploader :audio, AudioUploader
   belongs_to :excerpt
   belongs_to :user
+  has_many :comments, as: :commentable
 end

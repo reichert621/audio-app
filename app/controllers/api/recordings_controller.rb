@@ -2,16 +2,23 @@ class Api::RecordingsController < ApplicationController
   require 'base64'
   def index
     excerpt = Excerpt.find(params[:excerpt_id])
-    render json: excerpt.recordings.to_json(include: { user: { only: :email } })
+    recordings = excerpt.recordings.includes(:user, :comments)
+    render json: recordings, each_serializer: RecordingSerializer, root: false
   end
 
   def create
+    unless user_signed_in? 
+      render json: { message: "Please sign in" }, status: 422
+      return
+    end
+
     excerpt = Excerpt.find(params[:excerpt_id])
     recording = excerpt.recordings.new(recording_params)
     recording.audio = decoded_audio_file
+    recording.user_id = current_user.id
 
     if recording.save
-      render json: recording
+      render json: recording, root: false
     else
       render json: recording.errors.full_messages, status: 422
     end

@@ -47,15 +47,36 @@ hr
 
 .row
   .col-md-6
-    h2 Audio
-    ul#recordings-list
-      li ng-repeat="recording in recordings"
-        a href="{{recording.audio.url}}"
-          | {{ recording.name }}
-        small<
-          | by {{ recording.user.email }}
-        p
-          audio controls="true" ng-src="{{recording.audio.url}}"
+    h2 Recordings
+    div.recording-with-comments ng-repeat="recording in recordings"
+      a href="{{recording.audio_url}}"
+        | {{ recording.name }}
+      small<
+        | by {{ recording.author }}
+      p
+        audio controls="true" ng-src="{{recording.audio_url}}"
+      strong
+        | Comments
+        button.btn.btn-default.btn-xs< ng-click="add_new_comment(recording)" ng-disabled="recording.new_comment"
+          | Add
+
+      p ng-show="recording.new_comment"
+        textarea.form-control.comment-content rows="2" type="text" ng-model="recording.new_comment.content" placeholder="Enter comment..."
+        button.btn.btn-primary.btn-sm.pull-right ng-click="save_new_comment(recording)"
+          | Comment
+        button.btn.btn-default.btn-sm.pull-right ng-click="cancel_new_comment(recording)"
+          | Cancel
+
+      p ng-hide="recording.comments.length"
+        i
+          | No comments yet!
+      ul ng-show="recording.comments.length"
+        li ng-repeat="comment in recording.comments"
+          small
+            | {{ comment.author }}:
+          p
+            | {{ comment.content }}
+      hr
 
   .col-md-6
     h3 Create new recording
