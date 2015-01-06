@@ -1,6 +1,4 @@
 class Api::CommentsController < ApplicationController
-  def index
-  end
 
   def create
     unless user_signed_in? 

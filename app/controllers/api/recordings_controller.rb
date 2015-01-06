@@ -24,9 +24,6 @@ class Api::RecordingsController < ApplicationController
     end
   end
 
-  def show
-  end
-
   private
 
   def decoded_audio_file
