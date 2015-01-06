@@ -33,3 +33,9 @@
 <div class="container">
   <div ng-view=""></div>
 </div>
+
+<script>
+  var root = this;
+  var App = root.App = (root.App || {});
+  App.current_user_id = <%= current_user.try(:id) || -1 %>
+</script>

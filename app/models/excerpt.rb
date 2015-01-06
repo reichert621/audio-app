@@ -3,4 +3,5 @@ class Excerpt < ActiveRecord::Base
   belongs_to :text
   belongs_to :chapter
   has_many :recordings
+  has_many :favorites, as: :favoritable
 end

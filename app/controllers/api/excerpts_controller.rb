@@ -6,7 +6,6 @@ class Api::ExcerptsController < ApplicationController
 
   def show
     excerpt = Excerpt.find(params[:id])
-    chapter = excerpt.chapter
-    render json: { excerpt: excerpt, chapter: chapter }, root: false
+    render json: excerpt, serializer: ExcerptSerializer, root: false
   end
 end

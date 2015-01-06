@@ -21,5 +21,6 @@ Rails.application.routes.draw do
     end
 
     resources :comments
+    resources :favorites
   end
 end

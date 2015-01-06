@@ -1,12 +1,18 @@
 p.pull-right
-  a ng-href="#/texts/{{excerpt.text_id}}?chapter_id={{chapter.id}}"
+  a ng-href="#/texts/{{excerpt.text_id}}?chapter_id={{excerpt.chapter_id}}"
     | << Back
 
 h3
+  span.favorite-excerpt.glyphicon.text-primary> ng-class="is_favorited_by_current_user(excerpt)" ng-click="toggle_favorite(excerpt)"
   strong
-    | {{ chapter.name }}:
+    | {{ excerpt.chapter_name }}:
   | &nbsp;Excerpt #
   | {{ excerpt.rank }}
+p
+  span>
+    | {{ excerpt.likes.length }} like(s)
+  button.btn.btn-default.btn-xs< ng-click="toggle_favorite(excerpt)"
+    | {{ current_user_favorite() ? "Unlike" : "Like" }}
 
 hr
 

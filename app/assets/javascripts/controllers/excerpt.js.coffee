@@ -24,10 +24,41 @@ angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '
 
     fetch_excerpt = ->
       $http.get("/api/excerpts/#{$routeParams.id}").success (data) ->
-        $scope.excerpt = data.excerpt
-        $scope.chapter = data.chapter
+        $scope.excerpt = data
         $scope.excerpt_words = $scope.excerpt.content.split(" ")
         $scope.reset_speed_read()
+
+    $scope.current_user_favorite = ->
+      _.find($scope.excerpt?.likes, (like) -> like.user_id == App.current_user_id)
+
+    $scope.is_favorited_by_current_user = ->
+      if $scope.current_user_favorite()
+        'glyphicon-star'
+      else
+        'glyphicon-star-empty'
+
+    $scope.toggle_favorite = ->
+      favorite = $scope.current_user_favorite()
+      if favorite
+        favorite_excerpt(favorite)
+      else
+        unfavorite_excerpt()
+
+    favorite_excerpt = (favorite) ->
+      $http.delete("/api/favorites/#{favorite.id}").success (data) ->
+        $scope.excerpt.likes = _.reject($scope.excerpt.likes, data)
+      .error (data) ->
+        console.log(data)
+
+    unfavorite_excerpt = ->
+      params = favorite: {
+        favoritable_id: $scope.excerpt.id,
+        favoritable_type: "Excerpt"
+      }
+      $http.post("/api/favorites/", params).success (data) ->
+        $scope.excerpt.likes.push(data)
+      .error (data) ->
+        console.log(data)
 
     $scope.reset_speed_read = ->
       $scope.start_word_index = 0
