@@ -127,10 +127,11 @@ angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '
         $scope.recordings = data
         _.each($scope.recordings, (rec) ->
           rec.audio_url = $sce.trustAsResourceUrl(rec.audio_url)
+          rec.url = $sce.trustAsResourceUrl(rec.url)
         )
 
-    save_recording = (file, name) ->
-      params = { name: name, audio: file }
+    save_recording = (file, name, url) ->
+      params = { name: name, audio: file, url: url }
       $scope.saving = true
       $http.post("/api/excerpts/#{$routeParams.id}/recordings", params).success (data) ->
         add_recording_to_list(data)
@@ -144,13 +145,14 @@ angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '
     handle_audio_file = ->
       $scope.recorder && $scope.recorder.exportWAV (blob) ->
         name = "#{new Date().toISOString()}.wav"
+        url = URL.createObjectURL(blob)
         reader = new FileReader()
         reader.onload = (e) ->
-          save_recording(e.target.result, name)
+          save_recording(e.target.result, name, url)
         reader.readAsDataURL(blob)
 
     add_recording_to_list = (recording) ->
-      recording.audio_url = $sce.trustAsResourceUrl(recording.audio_url)
+      recording.audio_url = $sce.trustAsResourceUrl(recording.url)
       $scope.recordings.push(recording)
 
     $scope.add_new_comment = (recording) ->

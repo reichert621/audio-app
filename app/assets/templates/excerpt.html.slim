@@ -54,11 +54,13 @@ hr
 .row
   .col-md-6
     h2 Recordings
-    div.recording-with-comments ng-repeat="recording in recordings"
+    div.recording-with-comments ng-repeat="recording in recordings | orderBy:'id':true"
       a href="{{recording.audio_url}}"
         | {{ recording.name }}
       small<
         | by {{ recording.author }}
+      i< ng-hide="recording.audio_url"
+        | ( Download processing... )
       p
         audio controls="true" ng-src="{{recording.audio_url}}"
       strong

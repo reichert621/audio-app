@@ -1,5 +1,5 @@
 class RecordingSerializer < ActiveModel::Serializer
-  attributes :id, :name, :user_id, :audio_url, :author
+  attributes :id, :name, :user_id, :audio_url, :author, :url
   has_many :comments
 
   def audio_url

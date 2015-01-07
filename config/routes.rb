@@ -1,6 +1,10 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   devise_for :users
   root 'application#index'
+
+  mount Sidekiq::Web, at: '/sidekiq'
 
   devise_scope :user do
     get "sign_in", to: "devise/sessions#new"
