@@ -1,7 +1,7 @@
 class Api::ExcerptsController < ApplicationController
   def index
     chapter = Chapter.find(params[:chapter_id])
-    render json: chapter.excerpts, root: false
+    render json: chapter.excerpts.includes(:favorites), root: false
   end
 
   def show
