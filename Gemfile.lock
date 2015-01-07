@@ -279,6 +279,7 @@ DEPENDENCIES
   pry-rails
   quiet_assets
   rails (= 4.1.6)
+  redis
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
   sidekiq
