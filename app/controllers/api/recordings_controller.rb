@@ -15,9 +15,7 @@ class Api::RecordingsController < ApplicationController
     excerpt = Excerpt.find(params[:excerpt_id])
     recording = excerpt.recordings.new(recording_params)
     recording.user_id = current_user.id
-    Rails.cache.fetch("#{recording_params[:name]}", expires_in: 40.minutes) do
-      recording_params[:audio]
-    end
+    Rails.cache.write(recording_params[:name], recording_params[:audio])
 
     if recording.save
       SaveRecordingWorker.perform_async(recording.id)

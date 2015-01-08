@@ -65,6 +65,7 @@ GEM
     coffee-script-source (1.8.0)
     connection_pool (2.1.0)
     daemons (1.1.9)
+    dalli (2.7.2)
     debug_inspector (0.0.2)
     devise (3.4.1)
       bcrypt (~> 3.0)
@@ -274,6 +275,7 @@ DEPENDENCIES
   bower-rails
   carrierwave
   coffee-rails (~> 4.0.0)
+  dalli
   devise
   figaro
   fog
