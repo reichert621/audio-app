@@ -1,4 +1,5 @@
 class SaveRecordingWorker
+  require 'base64'
   include Sidekiq::Worker
   # sidekiq_options queue: "high"
   sidekiq_options retry: 3

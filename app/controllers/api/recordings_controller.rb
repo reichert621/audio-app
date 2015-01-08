@@ -1,5 +1,5 @@
 class Api::RecordingsController < ApplicationController
-  require 'base64'
+
   def index
     excerpt = Excerpt.find(params[:excerpt_id])
     recordings = excerpt.recordings.includes(:user, :comments)
