@@ -15,9 +15,10 @@ class Api::RecordingsController < ApplicationController
     excerpt = Excerpt.find(params[:excerpt_id])
     recording = excerpt.recordings.new(recording_params)
     recording.user_id = current_user.id
+    REDIS.set(recording_params[:name], recording_params[:audio])
 
     if recording.save
-      SaveRecordingWorker.perform_async(recording.id, recording_params[:audio])
+      SaveRecordingWorker.perform_async(recording.id)
       render json: recording, root: false
     else
       render json: recording.errors.full_messages, status: 422
