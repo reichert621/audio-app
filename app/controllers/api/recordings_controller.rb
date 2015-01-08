@@ -1,5 +1,5 @@
 class Api::RecordingsController < ApplicationController
-  require 'base64'
+
   def index
     excerpt = Excerpt.find(params[:excerpt_id])
     recordings = excerpt.recordings.includes(:user, :comments)
@@ -17,11 +17,7 @@ class Api::RecordingsController < ApplicationController
     recording.user_id = current_user.id
 
     if recording.save
-      decoded_audio = Base64.decode64(recording_params[:audio].split(",").last)
-      file = File.open("#{Rails.root}/tmp/#{recording.name}", "wb:binary") do |f|
-        f.write(decoded_audio)
-      end
-      SaveRecordingWorker.perform_async(recording.id)
+      SaveRecordingWorker.perform_async(recording.id, recording_params[:audio])
       render json: recording, root: false
     else
       render json: recording.errors.full_messages, status: 422
