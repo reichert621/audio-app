@@ -275,6 +275,7 @@ DEPENDENCIES
   bower-rails
   carrierwave
   coffee-rails (~> 4.0.0)
+  connection_pool
   dalli
   devise
   figaro

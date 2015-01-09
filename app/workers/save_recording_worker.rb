@@ -6,7 +6,14 @@ class SaveRecordingWorker
   
   def perform(recording_id)
     recording = Recording.find(recording_id)
-    audio_file = Rails.cache.fetch(recording.name)
+    arr = []
+    MEMCACHED.with do |conn|
+      count = conn.get("#{recording.name}_count")
+      count.times do |i|
+        arr << conn.get("#{recording.name}_#{i}")
+      end
+    end
+    audio_file = arr.join
     decoded_audio = Base64.decode64(audio_file.split(",").last)
     file = File.open("#{Rails.root}/tmp/#{recording.name}", "wb:binary") do |f|
       f.write(decoded_audio)

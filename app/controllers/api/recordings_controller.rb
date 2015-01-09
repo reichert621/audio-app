@@ -15,7 +15,14 @@ class Api::RecordingsController < ApplicationController
     excerpt = Excerpt.find(params[:excerpt_id])
     recording = excerpt.recordings.new(recording_params)
     recording.user_id = current_user.id
-    Rails.cache.write(recording_params[:name], recording_params[:audio])
+
+    split_file = recording_params[:audio].scan(/.{1,100000}/)
+    MEMCACHED.with do |conn|
+      conn.set("#{recording_params[:name]}_count", split_file.count)
+      split_file.each_with_index do |str, idx|
+        conn.set("#{recording_params[:name]}_#{idx}", str)
+      end
+    end
 
     if recording.save
       SaveRecordingWorker.perform_async(recording.id)
