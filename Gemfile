@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.1.6'
 gem 'pg'
 gem 'thin'
+gem 'unicorn'
 gem 'dalli'
 gem 'connection_pool'
 gem 'active_model_serializers'
@@ -34,9 +35,6 @@ gem 'sidekiq'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-
-# Use unicorn as the app server
-# gem 'unicorn'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
