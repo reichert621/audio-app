@@ -67,7 +67,7 @@ hr
         audio controls="true" ng-src="{{recording.audio_url}}"
       strong
         | Comments
-        button.btn.btn-default.btn-xs< ng-click="add_new_comment(recording)" ng-disabled="recording.new_comment" ng-if="user_is_signed_in"
+        button.btn.btn-default.btn-xs< ng-click="add_new_comment(recording)" ng-disabled="recording.new_comment" ng-if="user_is_signed_in()"
           | Add
 
       p ng-show="recording.new_comment"
@@ -80,6 +80,10 @@ hr
       p ng-hide="recording.comments.length"
         i
           | No comments yet!
+        i< ng-hide="user_is_signed_in()"
+          a> href="/sign_in"
+            | Sign in
+          | to comment.
       ul ng-show="recording.comments.length"
         li ng-repeat="comment in recording.comments"
           small
