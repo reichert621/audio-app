@@ -3,7 +3,7 @@ p.pull-right
     | << Back
 
 h3
-  span.favorite-excerpt.glyphicon.text-primary> ng-class="is_favorited_by_current_user(excerpt)" ng-click="toggle_favorite(excerpt)"
+  span.favorite-excerpt.glyphicon.text-primary> ng-class="is_favorited_by_current_user(excerpt)" ng-click="toggle_favorite(excerpt)" ng-if="user_is_signed_in()"
   strong
     | {{ excerpt.chapter_name }}:
   | &nbsp;Excerpt #
@@ -11,7 +11,7 @@ h3
 p
   span>
     | {{ excerpt.likes.length }} like(s)
-  button.btn.btn-default.btn-xs< ng-click="toggle_favorite(excerpt)"
+  button.btn.btn-default.btn-xs< ng-click="toggle_favorite(excerpt)" ng-if="user_is_signed_in()"
     | {{ current_user_favorite() ? "Unlike" : "Like" }}
 
 hr
@@ -52,8 +52,10 @@ hr
 hr
 
 .row
-  .col-md-6
+  .col-md-6.recordings-list
     h2 Recordings
+    i ng-hide="recordings.length"
+      | No recordings yet... Be the first to record!
     div.recording-with-comments ng-repeat="recording in recordings | orderBy:'id':true"
       a href="{{recording.audio_url}}"
         | {{ recording.name }}
@@ -65,7 +67,7 @@ hr
         audio controls="true" ng-src="{{recording.audio_url}}"
       strong
         | Comments
-        button.btn.btn-default.btn-xs< ng-click="add_new_comment(recording)" ng-disabled="recording.new_comment"
+        button.btn.btn-default.btn-xs< ng-click="add_new_comment(recording)" ng-disabled="recording.new_comment" ng-if="user_is_signed_in"
           | Add
 
       p ng-show="recording.new_comment"
@@ -87,18 +89,23 @@ hr
       hr
 
   .col-md-6
-    h3 Create new recording
-    button.btn.btn-success.record-button ng-disabled="is_recording || saving" ng-click="start_recording()"
-      | {{ is_recording ? 'Recording...' : 'Record' }}
-    button.btn.btn-danger.record-button ng-disabled="!is_recording || saving" ng-click="stop_recording()"
-      | Stop
-    button.btn.btn-default.record-button ng-disabled="is_recording || saving" ng-click="reset_recording()"
-      | Reset
-    button.btn.btn-primary.record-button ng-show="!is_recording && can_save_recording" ng-click="export_audio()" ng-disabled="saving"
-      | {{ saving ? "Saving..." : "Save"}}
-    hr
-    .preview-audio
+    .sign-in-to-record ng-if="!user_is_signed_in()"
       h4
-        | Preview
-      audio controls="true" ng-src="{{render_audio_preview()}}"
-      
+        a> href="/sign_in"
+          | Sign in
+        | to create new recording!
+    .new-recording ng-if="user_is_signed_in()"
+      h3 Create new recording
+      button.btn.btn-success.record-button ng-disabled="is_recording || saving" ng-click="start_recording()"
+        | {{ is_recording ? 'Recording...' : 'Record' }}
+      button.btn.btn-danger.record-button ng-disabled="!is_recording || saving" ng-click="stop_recording()"
+        | Stop
+      button.btn.btn-default.record-button ng-disabled="is_recording || saving" ng-click="reset_recording()"
+        | Reset
+      button.btn.btn-primary.record-button ng-show="!is_recording && can_save_recording" ng-click="export_audio()" ng-disabled="saving"
+        | {{ saving ? "Saving..." : "Save"}}
+      hr
+      .preview-audio
+        h4
+          | Preview
+        audio controls="true" ng-src="{{render_audio_preview()}}"

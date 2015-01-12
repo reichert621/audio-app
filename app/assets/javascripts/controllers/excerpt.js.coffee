@@ -22,6 +22,9 @@ angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '
         console.log 'No live audio input: ' + e
       )
 
+    $scope.user_is_signed_in = ->
+      App.current_user_id > 0
+
     fetch_excerpt = ->
       $http.get("/api/excerpts/#{$routeParams.id}").success (data) ->
         $scope.excerpt = data
