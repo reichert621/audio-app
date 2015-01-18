@@ -1,5 +1,5 @@
-angular.module('AudioApp').controller 'TextController', ['$scope', '$http', '$routeParams', '$location',
-  ($scope, $http, $routeParams, $location) ->
+angular.module('AudioApp').controller 'TextController', ['$scope', '$http', '$routeParams', '$location', '$upload',
+  ($scope, $http, $routeParams, $location, $upload) ->
     $scope.selected = {}
 
     init = ->
@@ -49,6 +49,21 @@ angular.module('AudioApp').controller 'TextController', ['$scope', '$http', '$ro
 
     $scope.is_selected = (chapter) ->
       chapter.id == $scope.selected.chapter.id
+
+    $scope.current_user_is_admin = ->
+      App.current_user_id == 1
+
+    $scope.upload_image = ->
+      for file in $scope.image_file
+        $scope.upload = $upload.upload(
+          method: 'PUT'
+          url: "api/texts/#{$routeParams.id}"
+          data: { text_id: $routeParams.id }
+          file: file
+        ).success (data) ->
+          console.log(data)
+        .error (data) ->
+          console.log(data)
 
     init()
   ]

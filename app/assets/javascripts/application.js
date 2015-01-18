@@ -17,6 +17,7 @@
 //= require angular-route
 //= require angular-rails-templates
 //= require angular-bootstrap
+//= require ng-file-upload
 //= require lodash
 //= require recorderWorker
 //= require recorder

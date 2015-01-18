@@ -1,7 +1,8 @@
 angular.module('AudioApp', [
     'ngRoute',
     'templates',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'angularFileUpload'
   ]).config(['$routeProvider',
   function ($routeProvider) {
     $routeProvider

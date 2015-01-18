@@ -4,7 +4,8 @@
     "dependencies": {
       "angular": "latest",
       "angular-route": "latest",
-      "angular-bootstrap": "latest"
+      "angular-bootstrap": "latest",
+      "ng-file-upload": "latest"
     }
   },
   "vendor": {

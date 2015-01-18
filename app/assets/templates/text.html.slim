@@ -6,6 +6,15 @@ h2
   | {{ book.name }}
 p
   | by {{ book.author }}
+
+form.form-inline ng-show="current_user_is_admin()"
+  input type="file" ng-file-select="" ng-model="image_file"
+  button.btn.btn-primary.btn-sm> ng-click="upload_image()"
+    | Save
+  button.btn.btn-danger.btn-sm ng-click="cancel_upload()"
+    | Cancel
+
+
 hr
 .row.chapter-previews
   .col-md-3
