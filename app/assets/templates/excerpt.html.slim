@@ -57,7 +57,7 @@ hr
     i ng-hide="recordings.length"
       | No recordings yet... Be the first to record!
     div.recording-with-comments ng-repeat="recording in recordings | orderBy:'id':true"
-      a href="{{recording.audio_url}}"
+      a href="{{recording.audio_url}}" download="{{recording.name}}"
         | {{ recording.name }}
       small<
         | by {{ recording.author }}
