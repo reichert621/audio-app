@@ -1,14 +1,12 @@
-h1
-  | Books
 hr
 div ng-repeat="book in books"
-  .col-md-4.book-preview
-    .row
-      .col-md-4
-        img.book-thumb ng-src="{{book.image.url}}"
-      .col-md-8
-        h4
-          a ng-href="#/texts/{{ book.id }}"
+  .book-preview
+    a ng-href="#/texts/{{ book.id }}"
+      .row
+        .col-md-4
+          img.book-thumb ng-src="{{book.image.url}}"
+        .col-md-8
+          h4
             | {{ book.name }}
-        p.small
-          | by {{ book.author }}
+          p.small
+            | by {{ book.author }}
