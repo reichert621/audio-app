@@ -1,6 +1,5 @@
 angular.module('AudioApp').controller 'TextController', ['$scope', '$http', '$routeParams', '$location', '$upload',
   ($scope, $http, $routeParams, $location, $upload) ->
-    $scope.selected = {}
 
     init = ->
       fetch_book()
@@ -9,8 +8,8 @@ angular.module('AudioApp').controller 'TextController', ['$scope', '$http', '$ro
       $http.get("/api/texts/#{$routeParams.id}").success (data) ->
         $scope.book = data.text
         $scope.chapters = data.chapters
-        c = set_display_chapter()
-        $scope.display_chapter_info(c)
+        $scope.chapter = set_display_chapter()
+        $scope.display_chapter_info($scope.chapter)
 
     set_display_chapter = ->
       _.find($scope.chapters, (ch) ->
@@ -18,8 +17,8 @@ angular.module('AudioApp').controller 'TextController', ['$scope', '$http', '$ro
       ) or _.find($scope.chapters, (ch) -> ch.rank == 1 )
 
     $scope.display_chapter_info = (chapter) ->
+      return unless chapter
       $location.search('chapter_id', chapter.id)
-      $scope.selected.chapter = chapter
       fetch_chapter_excerpts(chapter)
 
     fetch_chapter_excerpts = (chapter) ->
@@ -46,9 +45,6 @@ angular.module('AudioApp').controller 'TextController', ['$scope', '$http', '$ro
     $scope.toggle_all_excerpts = ->
       $scope.all_expanded = !$scope.all_expanded
       _.map($scope.excerpts, (excerpt) -> excerpt.show_all = $scope.all_expanded )
-
-    $scope.is_selected = (chapter) ->
-      chapter.id == $scope.selected.chapter.id
 
     $scope.current_user_is_admin = ->
       App.current_user_id == 1

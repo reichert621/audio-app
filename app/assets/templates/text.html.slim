@@ -2,40 +2,43 @@ p.pull-right
   a href="#/home"
     | << Back
 
-h2
-  | {{ book.name }}
-p
-  | by {{ book.author }}
+.row
+  .col-md-6
+    h2
+      | {{ book.name }}
+    p
+      | by {{ book.author }}
 
-form.form-inline ng-show="current_user_is_admin()"
-  input type="file" ng-file-select="" ng-model="image_file"
-  button.btn.btn-primary.btn-sm> ng-click="upload_image()"
-    | Save
-  button.btn.btn-danger.btn-sm ng-click="cancel_upload()"
-    | Cancel
+    form.form-inline ng-show="current_user_is_admin()"
+      input type="file" ng-file-select="" ng-model="image_file"
+      button.btn.btn-primary.btn-sm> ng-click="upload_image()"
+        | Save
+      button.btn.btn-danger.btn-sm ng-click="cancel_upload()"
+        | Cancel
+
+  .col-md-3
+    .chapter-selector
+      select.form-control ng-model='chapter' ng-options="chapter.name for chapter in chapters | orderBy:'rank'" ng-change="display_chapter_info(chapter)"
+        option value=""
+          | Select Section
 
 
 hr
-.row.chapter-previews
-  .col-md-3
-    div.list-group
-      a.list-group-item ng-repeat="chapter in chapters | orderBy:'rank'" ng-click="display_chapter_info(chapter)" ng-class="{ active: is_selected(chapter) }"
-        | {{ chapter.name }}
-        span.glyphicon.glyphicon-chevron-right.pull-right ng-if="is_selected(chapter)"
-
-  .col-md-9 ng-hide="selected.excerpt"
+.row.chapter-previews ng-show="chapter"
+  .col-md-11
     h2.chapter-header
-      | {{ selected.chapter.name }}
-      button.btn.btn-primary.pull-right ng-click="toggle_all_excerpts()"
+      | {{ chapter.name }}
+      button.btn.btn-primary.pull-right.expand-all ng-click="toggle_all_excerpts()"
         | {{ all_expanded ? "Collapse" : "Expand" }} All
 
+  .col-md-12
     hr
     div.excerpt-content ng-repeat="excerpt in excerpts | orderBy:'rank'"
       | {{ excerpt_preview(excerpt) }}
-      button.btn.btn-sm.btn-default.pull-right.toggle-preview ng-click="toggle_excerpt(excerpt)"
-        | {{ excerpt.show_all ? "Collapse" : "Expand" }}
 
       p.small
         a ng-href="#/excerpts/{{excerpt.id}}"
           | Go to excerpt >>
-      hr
+
+      button.btn.toggle-preview ng-click="toggle_excerpt(excerpt)"
+        | {{ excerpt.show_all ? "Collapse" : "Expand" }}
