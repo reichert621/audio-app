@@ -1,9 +1,5 @@
-p.pull-right
-  a href="#/home"
-    | << Back
-
 .row
-  .col-md-6
+  .col-md-9
     h2
       | {{ book.name }}
     p
@@ -22,23 +18,24 @@ p.pull-right
         option value=""
           | Select Section
 
-
-hr
 .row.chapter-previews ng-show="chapter"
-  .col-md-11
+  .col-md-9
     h2.chapter-header
       | {{ chapter.name }}
-      button.btn.btn-primary.pull-right.expand-all ng-click="toggle_all_excerpts()"
-        | {{ all_expanded ? "Collapse" : "Expand" }} All
+  .col-md-3
+    button.btn.btn-default.expand-all ng-click="toggle_all_excerpts()"
+      | {{ all_expanded ? "Collapse" : "Expand" }} All
+hr
+  .row ng-repeat="excerpt in excerpts | orderBy:'rank'"
+    .col-md-10
+      .excerpt-content-container
+        .excerpt-content
+          | {{ excerpt_preview(excerpt) }}
 
-  .col-md-12
-    hr
-    div.excerpt-content ng-repeat="excerpt in excerpts | orderBy:'rank'"
-      | {{ excerpt_preview(excerpt) }}
+        button.btn.toggle-preview ng-click="toggle_excerpt(excerpt)"
+          | {{ excerpt.show_all ? "Collapse" : "Expand" }}
 
-      p.small
+    .col-md-2
+      .excerpt-actions-container
         a ng-href="#/excerpts/{{excerpt.id}}"
-          | Go to excerpt >>
-
-      button.btn.toggle-preview ng-click="toggle_excerpt(excerpt)"
-        | {{ excerpt.show_all ? "Collapse" : "Expand" }}
+          i.glyphicon.glyphicon-chevron-right

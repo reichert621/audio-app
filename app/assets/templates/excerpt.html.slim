@@ -14,27 +14,25 @@ p
   button.btn.btn-default.btn-xs< ng-click="toggle_favorite(excerpt)" ng-if="user_is_signed_in()"
     | {{ current_user_favorite() ? "Unlike" : "Like" }}
 
-hr
+/ .row
+/   .col-md-4
+/     h4 Speed Reading Practice
+/     div.speed-read-options
+/       form.form-inline
+/         select.form-control.speed-read-settings ng-model='num_words_per_snippet' ng-options="num for num in num_words" ng-change="reset_speed_read()"
+/         label.control-label
+/           | &nbsp;word(s) per
 
-.row
-  .col-md-4
-    h4 Speed Reading Practice
-    div.speed-read-options
-      form.form-inline
-        select.form-control.speed-read-settings ng-model='num_words_per_snippet' ng-options="num for num in num_words" ng-change="reset_speed_read()"
-        label.control-label
-          | &nbsp;word(s) per
+/         select.form-control.speed-read-settings ng-model='ms_speed' ng-options="speed for speed in read_speeds"
+/         label.control-label
+/           | &nbsp;ms
 
-        select.form-control.speed-read-settings ng-model='ms_speed' ng-options="speed for speed in read_speeds"
-        label.control-label
-          | &nbsp;ms
-
-      button.btn.btn-primary.speed-read-settings ng-click="start_speed_read()" ng-hide="is_speed_reading"
-        | Start
-      button.btn.btn-danger.speed-read-settings ng-click="stop_speed_read()" ng-show="is_speed_reading"
-        | Stop
-      button.btn.btn-default.speed-read-settings ng-click="reset_speed_read()"
-        | Reset
+/       button.btn.btn-primary.speed-read-settings ng-click="start_speed_read()" ng-hide="is_speed_reading"
+/         | Start
+/       button.btn.btn-danger.speed-read-settings ng-click="stop_speed_read()" ng-show="is_speed_reading"
+/         | Stop
+/       button.btn.btn-default.speed-read-settings ng-click="reset_speed_read()"
+/         | Reset
 
   .col-md-8
     h4.info-header Text:
@@ -48,6 +46,40 @@ hr
   .col-md-8
     .full-excerpt-content
       | {{ excerpt.content }}
+
+  .col-md-4
+    .row
+      .col-md-12
+        h3 
+          | Speed Reading Practice
+          .toggle-icon.pull-right ng-click="toggle_show_speed_read()"
+            i.glyphicon.glyphicon-chevron-down ng-hide="speed_read_hidden"
+            i.glyphicon.glyphicon-chevron-right ng-show="speed_read_hidden"
+
+
+        #speed-read-section ng-hide="speed_read_hidden"
+          .speed-read-options 
+            form.form-inline
+              select.form-control.speed-read-settings ng-model='num_words_per_snippet' ng-options="num for num in num_words" ng-change="reset_speed_read()"
+              label.control-label
+                | &nbsp;word(s) per
+
+              select.form-control.speed-read-settings ng-model='ms_speed' ng-options="speed for speed in read_speeds"
+              label.control-label
+                | &nbsp;ms
+
+            button.btn.btn-primary.speed-read-settings ng-click="start_speed_read()" ng-hide="is_speed_reading"
+              | Start
+            button.btn.btn-danger.speed-read-settings ng-click="stop_speed_read()" ng-show="is_speed_reading"
+              | Stop
+            button.btn.btn-default.speed-read-settings ng-click="reset_speed_read()"
+              | Reset
+          hr
+          h4.info-header Text:
+          .speed-read
+            p
+              | {{ speed_read_snippet }}
+
 
 hr
 

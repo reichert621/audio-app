@@ -4,6 +4,7 @@ angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '
     $scope.read_speeds = [1000, 700, 500, 300, 200, 100]
     $scope.num_words_per_snippet = $scope.num_words[2]
     $scope.ms_speed = $scope.read_speeds[2]
+    $scope.speed_read_hidden = false
 
     init = ->
       fetch_excerpt()
@@ -90,6 +91,9 @@ angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '
       $interval.cancel($scope.stop_read)
       $scope.stop_read = undefined
       $scope.is_speed_reading = false
+
+    $scope.toggle_show_speed_read = ->
+      $scope.speed_read_hidden = !$scope.speed_read_hidden
 
     startUserMedia = (stream) ->
       input = $scope.audio_context.createMediaStreamSource(stream)

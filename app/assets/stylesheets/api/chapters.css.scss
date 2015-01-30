@@ -19,12 +19,14 @@
 
   select {
     height: 50px;
+    width: 200px;
     font-size: 16px;
   }
 }
 
 button.expand-all {
+  background-color: lightgray;
   height: 40px;
-  width: 150px;
+  width: 200px;
   margin: 0px 10px;
 }
