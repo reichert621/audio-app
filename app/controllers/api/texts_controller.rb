@@ -5,8 +5,6 @@ class Api::TextsController < ApplicationController
   end
 
   def create
-    binding.pry
-    render json: {}
   end
 
   def show

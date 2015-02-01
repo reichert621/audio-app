@@ -14,26 +14,6 @@ p
   button.btn.btn-default.btn-xs< ng-click="toggle_favorite(excerpt)" ng-if="user_is_signed_in()"
     | {{ current_user_favorite() ? "Unlike" : "Like" }}
 
-/ .row
-/   .col-md-4
-/     h4 Speed Reading Practice
-/     div.speed-read-options
-/       form.form-inline
-/         select.form-control.speed-read-settings ng-model='num_words_per_snippet' ng-options="num for num in num_words" ng-change="reset_speed_read()"
-/         label.control-label
-/           | &nbsp;word(s) per
-
-/         select.form-control.speed-read-settings ng-model='ms_speed' ng-options="speed for speed in read_speeds"
-/         label.control-label
-/           | &nbsp;ms
-
-/       button.btn.btn-primary.speed-read-settings ng-click="start_speed_read()" ng-hide="is_speed_reading"
-/         | Start
-/       button.btn.btn-danger.speed-read-settings ng-click="stop_speed_read()" ng-show="is_speed_reading"
-/         | Stop
-/       button.btn.btn-default.speed-read-settings ng-click="reset_speed_read()"
-/         | Reset
-
   .col-md-8
     h4.info-header Text:
     .speed-read
@@ -145,3 +125,11 @@ hr
         h4
           | Preview
         audio controls="true" ng-src="{{render_audio_preview()}}"
+      hr
+      h3 Upload recording
+      .file-upload
+        input.file type="file" ng-file-select="" ng-model="new_recording.file"
+        .btn.btn-default.upload
+          | {{ new_recording.file ? new_recording.file[0].name : 'Upload' }}
+        button.btn.btn-primary.btn-sm.save-upload> ng-show="new_recording.file" ng-click="upload_recording()"
+          i.glyphicon.glyphicon-ok

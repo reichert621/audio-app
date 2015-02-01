@@ -1,10 +1,11 @@
-angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '$routeParams', '$interval', '$location', '$sce',
-  ($scope, $http, $routeParams, $interval, $location, $sce) ->
+angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '$routeParams', '$interval', '$location', '$sce', '$upload',
+  ($scope, $http, $routeParams, $interval, $location, $sce, $upload) ->
     $scope.num_words = [1, 2, 3, 5, 7, 10]
     $scope.read_speeds = [1000, 700, 500, 300, 200, 100]
     $scope.num_words_per_snippet = $scope.num_words[2]
     $scope.ms_speed = $scope.read_speeds[2]
     $scope.speed_read_hidden = false
+    $scope.new_recording = {}
 
     init = ->
       fetch_excerpt()
@@ -162,6 +163,19 @@ angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '
     add_recording_to_list = (recording) ->
       recording.audio_url = $sce.trustAsResourceUrl(recording.url)
       $scope.recordings.push(recording)
+
+    $scope.upload_recording = ->
+      for file in $scope.new_recording.file
+        $scope.upload = $upload.upload(
+          method: 'POST'
+          url: "/api/excerpts/#{$routeParams.id}/recordings"
+          data: { name: file.name }
+          file: file
+        ).success (data) ->
+          add_recording_to_list(data)
+        .error (data) ->
+          $scope.new_recording = {}
+          console.log(data)
 
     $scope.add_new_comment = (recording) ->
       recording.new_comment = {

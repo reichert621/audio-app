@@ -13,28 +13,32 @@ class Api::RecordingsController < ApplicationController
     end
 
     excerpt = Excerpt.find(params[:excerpt_id])
-    recording = excerpt.recordings.new(recording_params)
+    recording = excerpt.recordings.new(name: params[:name])
     recording.user_id = current_user.id
 
-    split_file = recording_params[:audio].scan(/.{1,100000}/)
-    MEMCACHED.with do |conn|
-      conn.set("#{recording_params[:name]}_count", split_file.count)
-      split_file.each_with_index do |str, idx|
-        conn.set("#{recording_params[:name]}_#{idx}", str)
+    if params[:file]
+      recording.audio = params[:file]
+    elsif params[:audio]
+      split_file = params[:audio].scan(/.{1,100000}/)
+      MEMCACHED.with do |conn|
+        conn.set("#{params[:name]}_count", split_file.count)
+        split_file.each_with_index do |str, idx|
+          conn.set("#{params[:name]}_#{idx}", str)
+        end
       end
     end
 
     if recording.save
-      SaveRecordingWorker.perform_async(recording.id)
+      SaveRecordingWorker.perform_async(recording.id) if params[:audio]
       render json: recording, root: false
     else
-      render json: recording.errors.full_messages, status: 422
+      render json: recording.errors.full_messages, root: false, status: 422
     end
   end
 
   private
 
   def recording_params
-    params.require(:recording).permit(:name, :url, :filename, :audio)
+    params.require(:recording).permit(:name, :url, :filename, :audio, :file)
   end
 end

@@ -105,3 +105,26 @@ audio {
 .sign-in-to-record {
   margin: 30px 0px;
 }
+
+.file-upload {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+input.file {
+  position: absolute;
+  height: 35px;
+  width: 200px;
+  z-index: 2;
+  opacity: 0;
+}
+
+.upload {
+  width: 200px;
+  z-index: 1;
+}
+
+.save-upload {
+  margin-left: 10px;
+
+}
