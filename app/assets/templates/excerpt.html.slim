@@ -14,12 +14,6 @@ p
   button.btn.btn-default.btn-xs< ng-click="toggle_favorite(excerpt)" ng-if="user_is_signed_in()"
     | {{ current_user_favorite() ? "Unlike" : "Like" }}
 
-  .col-md-8
-    h4.info-header Text:
-    .speed-read
-      p
-        | {{ speed_read_snippet }}
-
 hr
 
 .row
