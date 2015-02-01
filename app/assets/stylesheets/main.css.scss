@@ -16,7 +16,7 @@
 
 .book-preview {
   float: left;;
-  height: 110px;
+  min-height: 110px;
   width: 350px;
   padding: 10px;
   margin: 15px;
@@ -29,6 +29,6 @@
 }
 
 .book-thumb {
-  width: 100%;
+  width: 80px;
   height: 80px;
 }

@@ -19,9 +19,10 @@ angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '
       catch error
         alert 'No web audio support in this browser!'
 
-      navigator.getUserMedia({audio: true}, startUserMedia, (e) ->
-        console.log 'No live audio input: ' + e
-      )
+      if navigator.getUserMedia
+        navigator.getUserMedia({audio: true}, startUserMedia, (e) ->
+          console.log 'No live audio input: ' + e
+        )
 
     $scope.user_is_signed_in = ->
       App.current_user_id > 0
