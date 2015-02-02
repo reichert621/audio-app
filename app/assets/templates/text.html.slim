@@ -26,7 +26,7 @@
     button.btn.btn-default.expand-all ng-click="toggle_all_excerpts()"
       | {{ all_expanded ? "Collapse" : "Expand" }} All
 hr
-  .row ng-repeat="excerpt in excerpts | orderBy:'rank'"
+  .row ng-repeat="excerpt in excerpts | orderBy:'rank'" ng-show="chapter"
     .col-md-10
       .excerpt-content-container
         .excerpt-content

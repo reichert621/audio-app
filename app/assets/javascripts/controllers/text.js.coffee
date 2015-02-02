@@ -1,13 +1,13 @@
-angular.module('AudioApp').controller 'TextController', ['$scope', '$http', '$routeParams', '$location', '$upload',
-  ($scope, $http, $routeParams, $location, $upload) ->
-
+angular.module('AudioApp').controller 'TextController', ['$scope', '$http', '$routeParams', '$location', '$upload', 'ChapterFactory',
+  ($scope, $http, $routeParams, $location, $upload, ChapterFactory) ->
     init = ->
       fetch_book()
 
     fetch_book = ->
-      $http.get("/api/texts/#{$routeParams.id}").success (data) ->
-        $scope.book = data.text
-        $scope.chapters = data.chapters
+      book_id = $routeParams.id
+      ChapterFactory.fetch_book(book_id).then ->
+        $scope.book = ChapterFactory.book
+        $scope.chapters = ChapterFactory.chapters
         $scope.chapter = set_display_chapter()
         $scope.display_chapter_info($scope.chapter)
 
@@ -22,8 +22,8 @@ angular.module('AudioApp').controller 'TextController', ['$scope', '$http', '$ro
       fetch_chapter_excerpts(chapter)
 
     fetch_chapter_excerpts = (chapter) ->
-      $http.get("/api/chapters/#{chapter.id}/excerpts").success (data) ->
-        $scope.excerpts = data
+      ChapterFactory.fetch_chapter_excerpts(chapter).then ->
+        $scope.excerpts = ChapterFactory.excerpts
         $scope.all_expanded = false
 
     $scope.excerpt_preview = (excerpt) ->

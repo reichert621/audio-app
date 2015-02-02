@@ -1,5 +1,5 @@
-angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '$routeParams', '$interval', '$location', '$sce', '$upload',
-  ($scope, $http, $routeParams, $interval, $location, $sce, $upload) ->
+angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '$routeParams', '$interval', '$location', '$sce', '$upload', 'ExcerptFactory',
+  ($scope, $http, $routeParams, $interval, $location, $sce, $upload, ExcerptFactory) ->
     $scope.num_words = [1, 2, 3, 5, 7, 10]
     $scope.read_speeds = [1000, 700, 500, 300, 200, 100]
     $scope.num_words_per_snippet = $scope.num_words[2]
@@ -29,8 +29,9 @@ angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '
       App.current_user_id > 0
 
     fetch_excerpt = ->
-      $http.get("/api/excerpts/#{$routeParams.id}").success (data) ->
-        $scope.excerpt = data
+      excerpt_id = $routeParams.id
+      ExcerptFactory.fetch_excerpt(excerpt_id).then ->
+        $scope.excerpt = ExcerptFactory.excerpt
         $scope.excerpt_words = $scope.excerpt.content.split(" ")
         $scope.reset_speed_read()
 
@@ -45,26 +46,19 @@ angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '
 
     $scope.toggle_favorite = ->
       favorite = $scope.current_user_favorite()
-      if favorite
-        favorite_excerpt(favorite)
-      else
-        unfavorite_excerpt()
+      if favorite then unfavorite_excerpt(favorite) else favorite_excerpt()
 
-    favorite_excerpt = (favorite) ->
-      $http.delete("/api/favorites/#{favorite.id}").success (data) ->
-        $scope.excerpt.likes = _.reject($scope.excerpt.likes, data)
-      .error (data) ->
-        console.log(data)
+    unfavorite_excerpt = (favorite) ->
+      ExcerptFactory.unfavorite_excerpt(favorite).then ->
+        $scope.excerpt = ExcerptFactory.excerpt
 
-    unfavorite_excerpt = ->
+    favorite_excerpt = ->
       params = favorite: {
         favoritable_id: $scope.excerpt.id,
         favoritable_type: "Excerpt"
       }
-      $http.post("/api/favorites/", params).success (data) ->
-        $scope.excerpt.likes.push(data)
-      .error (data) ->
-        console.log(data)
+      ExcerptFactory.favorite_excerpt(params).then ->
+        $scope.excerpt = ExcerptFactory.excerpt
 
     $scope.reset_speed_read = ->
       $scope.start_word_index = 0
