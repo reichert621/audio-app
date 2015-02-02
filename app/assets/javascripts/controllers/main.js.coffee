@@ -1,11 +1,11 @@
-angular.module('AudioApp').controller 'MainController', ['$scope', '$http', '$timeout',
-  ($scope, $http, $timeout) ->
+angular.module('AudioApp').controller 'MainController', ['$scope', '$http', '$timeout', 'BookFactory',
+  ($scope, $http, $timeout, BookFactory) ->
     init = ->
       fetch_books()
 
     fetch_books = ->
-      $http.get('/api/texts').success (data) ->
-        $scope.books = data
+      BookFactory.fetch_books().then ->
+        $scope.books = BookFactory.books
 
     init()
   ]

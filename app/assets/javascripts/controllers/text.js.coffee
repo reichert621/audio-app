@@ -50,7 +50,6 @@ angular.module('AudioApp').controller 'TextController', ['$scope', '$http', '$ro
       App.current_user_id == 1
 
     $scope.upload_image = ->
-      debugger
       for file in $scope.image_file
         $scope.upload = $upload.upload(
           method: 'PUT'
