@@ -69,6 +69,8 @@ hr
         | by {{ recording.author }}
       i< ng-hide="recording.audio_url"
         | ( Download processing... )
+      button.btn.btn-danger.btn-xs.delete-recording ng-click="delete_recording(recording)" ng-show="recording.user_id == current_user_id"
+        | Delete
       p
         audio controls="true" ng-src="{{recording.audio_url}}"
       strong

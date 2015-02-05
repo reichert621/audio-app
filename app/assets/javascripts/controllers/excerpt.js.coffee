@@ -6,6 +6,7 @@ angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '
     $scope.ms_speed = $scope.read_speeds[2]
     $scope.speed_read_hidden = false
     $scope.new_recording = {}
+    $scope.current_user_id = App.current_user_id
 
     init = ->
       fetch_excerpt()
@@ -111,6 +112,15 @@ angular.module('AudioApp').controller 'ExcerptController', ['$scope', '$http', '
       $scope.recorder.clear()
       reset_audio_preview()
       $scope.can_save_recording = false
+
+    $scope.delete_recording = (recording) ->
+      return unless confirm("Are you sure?")
+      $http.delete("/api/recordings/#{recording.id}").success (data) ->
+        $scope.recordings = _.reject($scope.recordings, (recording) ->
+          recording.id == data.id
+        )
+      .error (data) ->
+        console.log(data)
 
     reset_audio_preview = ->
       $('.preview-audio audio').attr('src', "")

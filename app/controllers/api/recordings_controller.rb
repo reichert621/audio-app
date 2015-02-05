@@ -19,6 +19,7 @@ class Api::RecordingsController < ApplicationController
     if params[:file]
       recording.audio = params[:file]
     elsif params[:audio]
+      recording.url = params[:url]
       split_file = params[:audio].scan(/.{1,100000}/)
       MEMCACHED.with do |conn|
         conn.set("#{params[:name]}_count", split_file.count)
@@ -34,6 +35,12 @@ class Api::RecordingsController < ApplicationController
     else
       render json: recording.errors.full_messages, root: false, status: 422
     end
+  end
+
+  def destroy
+    recording = Recording.find(params[:id])
+    recording.destroy!
+    render json: recording, root: false
   end
 
   private
